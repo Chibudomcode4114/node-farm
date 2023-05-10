@@ -1,5 +1,7 @@
 const fs = require("fs");
 const http = require('http');
+const url = require('url');
+
 
 // // const hello = 'Hello World';
 // // console.log(hello);
@@ -28,6 +30,7 @@ const http = require('http');
 // 
 // SERVER
 const server = http.createServer((req, res) => {
+    console.log(req.url);
     res.end('Hello from the server!');
 });
 
