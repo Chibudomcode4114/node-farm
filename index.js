@@ -29,31 +29,33 @@ const url = require('url');
 
 // 
 // SERVER
+const tempOverview = fs.readFileSync(`${__dirname}/templates/templates-overview.html`, 'utf-8');
+const tempCard = fs.readFileSync(`${__dirname}/templates/templates-card.html`, 'utf-8');
+const tempProduct = fs.readFileSync(`${__dirname}/templates/templates-product.html`, 'utf-8');
 
-
-fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
-    const productData = JSON.parse(data);
-});
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+const dataObj = JSON.parse(data);
 
 const server = http.createServer((req, res) => {
-    console.log(req.url);
-
     const pathName = req.url;
 
+    // Overview Page
     if (pathName === '/' || pathName === '/overview') {
-        res.end('this is the OVERVIEW')
+        res.writeHead(200, { 'Content-type': 'text/html' });
+        res.end(tempOverview)
+
+        // Product Page
     } else if (pathName === '/product') {
-        res.end('This is the Product')
+        res.end('This is the PRODUCT')
+
+        // API 
     } else if (pathName === '/api') {
+        res.writeHead(200, { 'Content-type': 'application/json' });
+        res.end(data);
 
-        fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
-            const productData = JSON.parse(data);
-            res.writeHead(200, { 'Content-type': 'application/json' })
-            res.end(data)
-        });
-
+        // Not Found 
     } else {
-        res.writeHead('404', {
+        res.writeHead(404, {
             'Content-type': 'text/html',
             'my-own-header': 'hello-world'
         });
